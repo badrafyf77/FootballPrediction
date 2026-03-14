@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+
+# Node
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Env and secrets
+.env
+.env.*
+*.pem
+
+# Embedded git backups from previous nested repos
+**/.git.embedded.backup/
+
+# Terraform local state
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+
+# Minikube / kube local files
+*.kubeconfig

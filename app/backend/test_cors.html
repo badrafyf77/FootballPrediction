@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test</title>
+</head>
+<body>
+    <h1>CORS Test</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            
+            // Test data
+            const testData = {
+                match_data: {
+                    homeGD: 5.0,
+                    homeWins: 10,
+                    homePlayed: 15,
+                    homeRank: 3,
+                    lastHome5GamesScore: 2.2,
+                    strHomeTeam: "Manchester City",
+                    awayGD: 3.0,
+                    awayWins: 8,
+                    awayPlayed: 15,
+                    awayRank: 5,
+                    lastAway5GamesScore: 1.8,
+                    strAwayTeam: "Liverpool"
+                }
+            };
+
+            try {
+                // Try local first
+                let url = 'http://localhost:7860/api/predict';
+                console.log('Testing:', url);
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `Error: ${response.status} - ${response.statusText}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

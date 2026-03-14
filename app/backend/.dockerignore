@@ -1,0 +1,24 @@
+# VCS
+.git
+.gitignore
+
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Local environments and tooling
+.venv/
+venv/
+env/
+.DS_Store
+
+# Test and local-only files
+test_*.py
+test_*.html
+README.md
+Dockerfile
