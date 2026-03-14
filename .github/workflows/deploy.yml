@@ -28,7 +28,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r app/backend/requirements.txt
+        run: |
+          pip install -r app/backend/requirements.txt
+          pip install pytest httpx
 
       - name: Run tests
         run: |
