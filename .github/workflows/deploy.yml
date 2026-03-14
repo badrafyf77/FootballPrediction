@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r app/backend/requirements.txt
-          pip install pytest httpx
+          pip install pytest httpx==0.24.1 starlette==0.27.0
 
       - name: Run tests
         run: |
