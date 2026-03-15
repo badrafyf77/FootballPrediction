@@ -90,3 +90,47 @@ jobs:
           tags: |
             moerad/football-frontend:latest
             moerad/football-frontend:sha-${{ github.sha }}
+
+  # ─────────────────────────
+  # JOB 4 — DEPLOY TO KUBERNETES
+  # ─────────────────────────
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: [build-backend, build-frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f kubernetes/backend-deployment.yaml
+          kubectl apply -f kubernetes/backend-service.yaml
+          kubectl apply -f kubernetes/frontend-deployment.yaml
+          kubectl apply -f kubernetes/frontend-service.yaml
+
+      - name: Update images
+        run: |
+          kubectl set image deployment/backend \
+            backend=moerad/football-backend:sha-${{ github.sha }} \
+            -n default
+          kubectl set image deployment/frontend \
+            frontend=moerad/football-frontend:sha-${{ github.sha }} \
+            -n default
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/backend -n default --timeout=300s
+          kubectl rollout status deployment/frontend -n default --timeout=300s
