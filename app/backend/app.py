@@ -5,8 +5,10 @@ from typing import Dict, Any
 import pandas as pd
 import numpy as np
 import joblib
+from pathlib import Path
 import requests
 import io
+import os
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
@@ -77,14 +79,32 @@ class PredictionResponse(BaseModel):
     combined_prediction: CombinedPredictionResponse
 
 # -----------------------------
-# Helper: Load model from GitHub
+# Helper: Load model from local models directory
 # -----------------------------
-def load_model_from_github(filename):
-    base_url = "https://github.com/AymanChabbaki/football-models/raw/refs/heads/main/"
-    url = f"{base_url}{filename}"
-    response = requests.get(url)
-    response.raise_for_status()
-    return joblib.load(io.BytesIO(response.content))
+def load_model(filename):
+    models_dir = Path(__file__).resolve().parent / "models"
+    model_path = models_dir / filename
+    if not model_path.exists():
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+
+    # Git LFS pointer files are small text stubs and cannot be unpickled.
+    try:
+        with open(model_path, "rb") as f:
+            header = f.read(128)
+        if b"git-lfs" in header:
+            raise ValueError("Model file is a Git LFS pointer")
+        return joblib.load(model_path)
+    except Exception:
+        base_url = os.getenv("MODEL_BASE_URL", "").rstrip("/")
+        if not base_url:
+            raise RuntimeError(
+                "Unable to load local model binary. Set MODEL_BASE_URL to a model host URL."
+            )
+
+        model_url = f"{base_url}/{filename}"
+        response = requests.get(model_url, timeout=30)
+        response.raise_for_status()
+        return joblib.load(io.BytesIO(response.content))
 
 # -----------------------------
 # Preprocessing helper
@@ -214,7 +234,7 @@ LEAGUE_MODELS = {
 # Load models into memory
 for league, models in LEAGUE_MODELS.items():
     for model_type, config in models.items():
-        config['model'] = load_model_from_github(config['filename'])
+        config['model'] = load_model(config['filename'])
         config['preprocessor'] = create_preprocessor(
             config['categorical_features'],
             config['numerical_features']

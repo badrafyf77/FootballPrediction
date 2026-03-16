@@ -113,8 +113,8 @@ const PredictionResult = ({ league, homeTeam, awayTeam, onBack }) => {
           awayRank: parseInt(awayStats.intRank || 0)
         };
 
-        // Send this to backend
-        const predictionResponse = await axios.post('https://aymenenene-footballpredict.hf.space/api/predict', {
+        // Send this to the containerized backend through frontend reverse proxy.
+        const predictionResponse = await axios.post('/api/predict', {
           league: league.key,
           match_data: matchData
         });
@@ -124,7 +124,7 @@ const PredictionResult = ({ league, homeTeam, awayTeam, onBack }) => {
       } catch (err) {
         console.error('Prediction error:', err);
         setError(err.message || 'Failed to generate prediction');
-        setPrediction(generateMockPrediction(homeTeam, awayTeam));
+        setPrediction(null);
       } finally {
         setLoading(false);
       }
@@ -169,8 +169,7 @@ const PredictionResult = ({ league, homeTeam, awayTeam, onBack }) => {
     return value ? parseFloat(value).toFixed(decimals) : '0.00';
   };
 
-  const safePrediction = prediction || generateMockPrediction(homeTeam, awayTeam);
-  const combinedPrediction = safePrediction.combined_prediction || safePrediction;
+  const combinedPrediction = prediction?.combined_prediction;
 
   return (
     <div className="prediction-container">
@@ -213,9 +212,9 @@ const PredictionResult = ({ league, homeTeam, awayTeam, onBack }) => {
       ) : error ? (
         <div className="error-message">
           {error}
-          <p>Showing simulated data</p>
+          <p>Could not fetch prediction from backend.</p>
         </div>
-      ) : (
+      ) : combinedPrediction ? (
         <div className="prediction-result fade-in">
           <div className="score-prediction">
             <h4>Score Prediction</h4>
@@ -311,6 +310,8 @@ const PredictionResult = ({ league, homeTeam, awayTeam, onBack }) => {
             </div>
           </div>
         </div>
+      ) : (
+        <div className="error-message">No prediction data returned from backend.</div>
       )}
     </div>
   );

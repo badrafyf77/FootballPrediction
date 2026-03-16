@@ -3,6 +3,8 @@ services:
     build:
       context: ./app/backend
     container_name: fp-backend
+    environment:
+      - MODEL_BASE_URL=${MODEL_BASE_URL:-}
     ports:
       - "7860:7860"
     restart: unless-stopped
