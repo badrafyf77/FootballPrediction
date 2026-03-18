@@ -9,5 +9,5 @@ Suggested files:
 - `main.tf`
 - `outputs.tf`
 
-master_public_ip = "34.254.185.90"
-worker_public_ip = "54.228.151.1"
+master_public_ip = "34.245.56.186"
+worker_public_ip = "34.245.1.66"
