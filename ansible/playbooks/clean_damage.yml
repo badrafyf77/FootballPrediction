@@ -1,0 +1,35 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Reset Kubernetes proprement
+      shell: kubeadm reset -f
+      ignore_errors: yes
+
+    - name: Arreter les services K8s
+      service:
+        name: "{{ item }}"
+        state: stopped
+      with_items:
+        - kubelet
+      ignore_errors: yes
+
+    - name: Nettoyer Docker et vider la RAM
+      shell: |
+        docker rm -f $(docker ps -aq) || true
+        sync; echo 3 > /proc/sys/vm/drop_caches
+        swapoff -a
+
+    - name: Supprimer les configs Kube de l utilisateur ec2-user
+      file:
+        path: "/home/ec2-user/.kube"
+        state: absent
+
+    - name: Nettoyer les dossiers systeme Kubernetes
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/kubernetes/
+        - /var/lib/etcd/
+        - /var/lib/kubelet/
