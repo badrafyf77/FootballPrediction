@@ -1,7 +1,7 @@
 # Key Pair
 resource "aws_key_pair" "deployer" {
   key_name   = var.key_name
-  public_key = file("C:/Users/hp/.ssh/id_ed25519.pub")
+  public_key = file(var.public_key_path)
 }
 
 # Security Group
@@ -67,7 +67,7 @@ resource "aws_security_group" "k8s_sg" {
 
 # Master Node
 resource "aws_instance" "master" {
-  ami                    = "ami-0d1b55a6d77a0c326" # Amazon Linux 2 us-east-1
+  ami                    = "ami-0d1b55a6d77a0c326" # Amazon Linux 2 eu-west-1
   instance_type          = var.instance_type
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.k8s_sg.id]

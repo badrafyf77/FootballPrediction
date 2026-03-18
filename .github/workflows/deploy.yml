@@ -2,9 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, integration/final-merge ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 env:
   BACKEND_IMAGE: moerad/football-backend
@@ -44,7 +45,7 @@ jobs:
     name: Build & Push Backend
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: contains(fromJSON('["refs/heads/main","refs/heads/integration/final-merge"]'), github.ref) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -71,7 +72,7 @@ jobs:
     name: Build & Push Frontend
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: contains(fromJSON('["refs/heads/main","refs/heads/integration/final-merge"]'), github.ref) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -98,7 +99,7 @@ jobs:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
     needs: [build-backend, build-frontend]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: contains(fromJSON('["refs/heads/main","refs/heads/integration/final-merge"]'), github.ref) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -134,3 +135,10 @@ jobs:
         run: |
           kubectl rollout status deployment/backend -n default --timeout=300s
           kubectl rollout status deployment/frontend -n default --timeout=300s
+
+      - name: Smoke test in cluster
+        run: |
+          kubectl run smoke-backend --rm -i --restart=Never --image=curlimages/curl:8.7.1 -- \
+            curl -fsS http://backend:7860/health
+          kubectl run smoke-frontend --rm -i --restart=Never --image=curlimages/curl:8.7.1 -- \
+            curl -fsS http://frontend-service/health

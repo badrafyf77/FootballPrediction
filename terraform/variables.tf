@@ -11,6 +11,11 @@ variable "key_name" {
   type        = string
 }
 
+variable "public_key_path" {
+  description = "Path to the SSH public key file used for AWS key pair"
+  type        = string
+}
+
 variable "project_name" {
   default = "devops-match-predictor"
 }
