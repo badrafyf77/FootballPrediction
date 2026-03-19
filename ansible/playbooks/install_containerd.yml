@@ -1,0 +1,18 @@
+---
+- hosts: k8s
+  become: yes
+  tasks:
+    - name: Installer containerd
+      shell: dnf install -y containerd || yum install -y containerd
+
+    - name: Configurer containerd
+      shell: |
+        mkdir -p /etc/containerd
+        containerd config default > /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+    - name: Demarrer containerd
+      service:
+        name: containerd
+        state: restarted
+        enabled: yes
