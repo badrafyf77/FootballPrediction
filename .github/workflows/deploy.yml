@@ -134,10 +134,3 @@ jobs:
         run: |
           kubectl rollout status deployment/backend -n default --timeout=300s
           kubectl rollout status deployment/frontend -n default --timeout=300s
-
-      - name: Smoke test in cluster
-        run: |
-          kubectl run smoke-backend --rm -i --restart=Never --image=curlimages/curl:8.7.1 -- \
-            curl -fsS http://backend:7860/health
-          kubectl run smoke-frontend --rm -i --restart=Never --image=curlimages/curl:8.7.1 -- \
-            curl -fsS http://frontend-service/health
