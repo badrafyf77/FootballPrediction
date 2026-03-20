@@ -96,7 +96,18 @@ const LandingPage = ({ onStart }) => {
         </svg>
       </div>
       
-  
+      {/* Build Version - Change this on demo day to prove CI/CD works! */}
+      <div className="build-version" style={{
+        position: 'absolute',
+        bottom: '10px',
+        right: '15px',
+        fontSize: '12px',
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'monospace'
+      }}>
+        Build: v1.0.0 🚀
+      </div>
+      
     </div>
   );
 };
