@@ -113,15 +113,16 @@ const LandingPage = ({ onStart }) => {
       <div
         className="build-version"
         style={{
-          position: "absolute",
+          position: "fixed",
           bottom: "10px",
           right: "15px",
           fontSize: "12px",
           color: "rgba(255, 255, 255, 0.6)",
           fontFamily: "monospace",
+          zIndex: 9999,
         }}
       >
-        Build: v1.1.0 🚀
+        Build: v1.2.0 🚀
       </div>
     </div>
   );
