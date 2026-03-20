@@ -17,7 +17,7 @@ spec:
       containers:
         - name: backend
           image: moerad/football-backend:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 7860
           readinessProbe:
