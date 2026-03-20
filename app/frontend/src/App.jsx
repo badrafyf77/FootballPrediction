@@ -1,20 +1,20 @@
-import LeaguesList from '/component/LeaguesList';
-import TeamsList from '/component/TeamsList';
-import PredictionResult from '/component/PredictionResult';
-import './common.css';
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import LeaguesList from "/component/LeaguesList";
+import TeamsList from "/component/TeamsList";
+import PredictionResult from "/component/PredictionResult";
+import "./common.css";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Target, Zap, Trophy } from "lucide-react";
 
 const LandingPage = ({ onStart }) => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [fade, setFade] = useState(true);
-  
+
   const texts = [
     "AI-Powered Football Predictions",
     "Accurate Match Forecasting",
     "Data-Driven Insights",
-    "Your Winning Strategy Starts Here"
+    "Your Winning Strategy Starts Here",
   ];
 
   useEffect(() => {
@@ -33,22 +33,24 @@ const LandingPage = ({ onStart }) => {
     <div className="landing-container">
       <div className="landing-content">
         <div className="football-image-container">
-          <img 
-            src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-            alt="Football stadium" 
+          <img
+            src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            alt="Football stadium"
             className="football-image"
           />
           <div className="image-overlay"></div>
         </div>
-        
+
         <div className="landing-text">
-          <h1 className={`main-title ${fade ? 'fade-in' : 'fade-out'}`}>
+          <h1 className={`main-title ${fade ? "fade-in" : "fade-out"}`}>
             {texts[currentTextIndex]}
           </h1>
           <p className="subtitle">
-            Harness the power of advanced artificial intelligence to predict football match outcomes with unprecedented accuracy. Get real-time analysis, probability insights, and winning strategies.
+            Harness the power of advanced artificial intelligence to predict
+            football match outcomes with unprecedented accuracy. Get real-time
+            analysis, probability insights, and winning strategies.
           </p>
-          
+
           {/* Feature Highlights */}
           <div className="feature-highlights">
             <div className="feature-item">
@@ -64,11 +66,11 @@ const LandingPage = ({ onStart }) => {
               <span className="feature-text">Top Leagues</span>
             </div>
           </div>
-          
+
           <button className="start-button" onClick={onStart}>
             Start Predicting Now
           </button>
-          
+
           {/* Stats Preview */}
           <div className="stats-preview">
             <div className="stat-box">
@@ -86,37 +88,53 @@ const LandingPage = ({ onStart }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="scroll-indicator">
-        <svg style={{
-          display: 'block',
-          margin: '0 auto'
-        }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 5v14M19 12l-7 7-7-7" strokeWidth="2" strokeLinecap="round" />
+        <svg
+          style={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M12 5v14M19 12l-7 7-7-7"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       </div>
-      
+
       {/* Build Version - Change this on demo day to prove CI/CD works! */}
-      <div className="build-version" style={{
-        position: 'absolute',
-        bottom: '10px',
-        right: '15px',
-        fontSize: '12px',
-        color: 'rgba(255, 255, 255, 0.6)',
-        fontFamily: 'monospace'
-      }}>
-        Build: v1.0.0 🚀
+      <div
+        className="build-version"
+        style={{
+          position: "absolute",
+          bottom: "10px",
+          right: "15px",
+          fontSize: "12px",
+          color: "rgba(255, 255, 255, 0.6)",
+          fontFamily: "monospace",
+        }}
+      >
+        Build: v1.1.0 🚀
       </div>
-      
     </div>
   );
 };
 
 const App = () => {
   const [showLanding, setShowLanding] = useState(true);
-  const [view, setView] = useState('leagues');
+  const [view, setView] = useState("leagues");
   const [selectedLeague, setSelectedLeague] = useState(null);
-  const [selectedTeams, setSelectedTeams] = useState({ home: null, away: null });
+  const [selectedTeams, setSelectedTeams] = useState({
+    home: null,
+    away: null,
+  });
   const [prediction, setPrediction] = useState(null);
 
   const handleStart = () => {
@@ -127,52 +145,55 @@ const App = () => {
     return <LandingPage onStart={handleStart} />;
   }
 
-
   // ... rest of your existing App component code ...
   const handleSelectLeague = (league) => {
     setSelectedLeague(league);
-    setView('teams');
+    setView("teams");
   };
 
   const handleSelectTeams = (homeTeam, awayTeam) => {
     setSelectedTeams({ home: homeTeam, away: awayTeam });
-    setView('prediction');
+    setView("prediction");
     generatePrediction(homeTeam, awayTeam);
   };
 
   const generatePrediction = async (homeTeam, awayTeam) => {
     // Simulate API call to get prediction
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     // Mock prediction data - replace with actual API call
     const mockPrediction = {
       homeScore: Math.floor(Math.random() * 4),
       awayScore: Math.floor(Math.random() * 3),
-      winner: Math.random() > 0.6 ? 'home' : (Math.random() > 0.3 ? 'away' : 'draw'),
+      winner:
+        Math.random() > 0.6 ? "home" : Math.random() > 0.3 ? "away" : "draw",
       probability: {
         home: Math.floor(Math.random() * 40) + 30,
         draw: Math.floor(Math.random() * 30) + 10,
-        away: 100 - (Math.floor(Math.random() * 40) + 30) - (Math.floor(Math.random() * 30) + 10)
+        away:
+          100 -
+          (Math.floor(Math.random() * 40) + 30) -
+          (Math.floor(Math.random() * 30) + 10),
       },
       expectedGoals: {
         home: (Math.random() * 3).toFixed(2),
-        away: (Math.random() * 2).toFixed(2)
+        away: (Math.random() * 2).toFixed(2),
       },
       bothTeamsToScore: Math.random() > 0.5,
-      overUnder: (Math.random() * 2) + 1.5
+      overUnder: Math.random() * 2 + 1.5,
     };
-    
+
     setPrediction(mockPrediction);
   };
 
   const handleBackToLeagues = () => {
     setSelectedLeague(null);
-    setView('leagues');
+    setView("leagues");
   };
 
   const handleBackToTeams = () => {
     setPrediction(null);
-    setView('teams');
+    setView("teams");
   };
 
   // ... rest of your component logic ...
@@ -185,16 +206,21 @@ const App = () => {
           <p>AI-powered match predictions for top football leagues</p>
         </header>
 
-        {view === 'leagues' && <LeaguesList onSelectLeague={handleSelectLeague} onBack={() => setShowLanding(true)} />}
-        {view === 'teams' && (
-          <TeamsList 
-            league={selectedLeague} 
-            onSelectTeams={handleSelectTeams} 
+        {view === "leagues" && (
+          <LeaguesList
+            onSelectLeague={handleSelectLeague}
+            onBack={() => setShowLanding(true)}
+          />
+        )}
+        {view === "teams" && (
+          <TeamsList
+            league={selectedLeague}
+            onSelectTeams={handleSelectTeams}
             onBack={handleBackToLeagues}
           />
         )}
-        {view === 'prediction' && (
-          <PredictionResult 
+        {view === "prediction" && (
+          <PredictionResult
             league={selectedLeague}
             homeTeam={selectedTeams.home}
             awayTeam={selectedTeams.away}
@@ -203,7 +229,6 @@ const App = () => {
           />
         )}
       </div>
-
     </div>
   );
 };
