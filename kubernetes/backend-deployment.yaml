@@ -24,16 +24,16 @@ spec:
             httpGet:
               path: /health
               port: 7860
-            initialDelaySeconds: 40
-            periodSeconds: 10
+            initialDelaySeconds: 15
+            periodSeconds: 5
             timeoutSeconds: 3
-            failureThreshold: 6
+            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /health
               port: 7860
-            initialDelaySeconds: 70
-            periodSeconds: 20
+            initialDelaySeconds: 30
+            periodSeconds: 10
             timeoutSeconds: 3
             failureThreshold: 3
           resources:
