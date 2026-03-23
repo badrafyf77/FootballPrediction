@@ -7,11 +7,11 @@ import BuildVersion from "@/components/BuildVersion";
 const STATS = [
   { number: "6", label: "Leagues" },
   { number: "100+", label: "Teams" },
-  { number: "1000+", label: "Predictions" },
+  { number: "<1s", label: "Prediction Time" },
 ];
 
 const FEATURES = [
-  { icon: Target, label: "95% Accuracy" },
+  { icon: Target, label: "65% Accuracy" },
   { icon: Zap, label: "Real-Time Data" },
   { icon: Trophy, label: "Top Leagues" },
 ];
