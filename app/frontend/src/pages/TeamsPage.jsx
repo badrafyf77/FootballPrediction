@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import TeamsList from "@/components/TeamsList";
+import BuildVersion from "@/components/BuildVersion";
 
 const TeamsPage = () => {
   const navigate = useNavigate();
@@ -14,13 +15,16 @@ const TeamsPage = () => {
   if (!league) return null;
 
   return (
-    <TeamsList
-      league={league}
-      onSelectTeams={(homeTeam, awayTeam) =>
-        navigate("/prediction", { state: { league, homeTeam, awayTeam } })
-      }
-      onBack={() => navigate("/leagues")}
-    />
+    <div>
+      <TeamsList
+        league={league}
+        onSelectTeams={(homeTeam, awayTeam) =>
+          navigate("/prediction", { state: { league, homeTeam, awayTeam } })
+        }
+        onBack={() => navigate("/leagues")}
+      />
+      <BuildVersion />
+    </div>
   );
 };
 

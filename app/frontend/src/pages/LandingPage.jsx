@@ -2,17 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { Target, Zap, Trophy, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import BuildVersion from "@/components/BuildVersion";
 
 const STATS = [
-  { number: "6",     label: "Leagues"     },
-  { number: "100+",  label: "Teams"       },
+  { number: "6", label: "Leagues" },
+  { number: "100+", label: "Teams" },
   { number: "1000+", label: "Predictions" },
 ];
 
 const FEATURES = [
-  { icon: Target, label: "95% Accuracy"   },
-  { icon: Zap,    label: "Real-Time Data" },
-  { icon: Trophy, label: "Top Leagues"    },
+  { icon: Target, label: "95% Accuracy" },
+  { icon: Zap, label: "Real-Time Data" },
+  { icon: Trophy, label: "Top Leagues" },
 ];
 
 const LandingPage = () => {
@@ -41,27 +42,29 @@ const LandingPage = () => {
       `}</style>
 
       <div className="relative min-h-screen flex flex-col overflow-hidden bg-[#0a0e27]">
-
         {/* Animated gradient orbs */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div
             className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-30"
             style={{
-              background: "radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%)",
               animation: "orb-1 12s ease-in-out infinite",
             }}
           />
           <div
             className="absolute bottom-[-20%] right-[-10%] w-[700px] h-[700px] rounded-full opacity-25"
             style={{
-              background: "radial-gradient(circle, rgba(0,212,255,0.4) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(0,212,255,0.4) 0%, transparent 70%)",
               animation: "orb-2 15s ease-in-out infinite",
             }}
           />
           <div
             className="absolute top-[40%] left-[45%] w-[400px] h-[400px] rounded-full opacity-15"
             style={{
-              background: "radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%)",
               animation: "orb-3 18s ease-in-out infinite",
             }}
           />
@@ -101,8 +104,9 @@ const LandingPage = () => {
 
             {/* Subtitle */}
             <p className="text-white/55 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-              Advanced machine learning models analyze real match data to deliver
-              accurate score predictions, win probabilities, and goal forecasts.
+              Advanced machine learning models analyze real match data to
+              deliver accurate score predictions, win probabilities, and goal
+              forecasts.
             </p>
 
             {/* CTA */}
@@ -120,7 +124,11 @@ const LandingPage = () => {
                   key={label}
                   className="flex items-center gap-2 bg-white/5 border border-white/10 px-5 py-2.5 rounded-full text-sm text-white/75 font-medium backdrop-blur-sm hover:border-[rgba(0,255,136,0.5)] hover:bg-[rgba(0,255,136,0.05)] hover:text-white transition-all duration-300"
                 >
-                  <Icon size={15} className="text-[#00ff88]" strokeWidth={2.5} />
+                  <Icon
+                    size={15}
+                    className="text-[#00ff88]"
+                    strokeWidth={2.5}
+                  />
                   {label}
                 </div>
               ))}
@@ -153,11 +161,7 @@ const LandingPage = () => {
         <div className="relative z-10 flex justify-center pb-8 animate-bounce">
           <ChevronDown size={20} className="text-white/25" />
         </div>
-
-        {/* Build version */}
-        <div className="fixed bottom-3 right-4 text-[11px] text-white/25 font-mono z-50">
-          v1.2.0
-        </div>
+        <BuildVersion />
       </div>
     </>
   );
